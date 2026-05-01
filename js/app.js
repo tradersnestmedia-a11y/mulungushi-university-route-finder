@@ -213,8 +213,38 @@ function openLightbox(id) {
   lightbox.classList.add('show');
 }
 
+function getCurrentLocation() {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error('Geolocation not supported'));
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        resolve({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+      },
+      error => {
+        reject(error);
+      }
+    );
+  });
+}
+
 function getDirections(id) {
   const loc = locations.find(l => l.id === id);
+  getCurrentLocation().then(currentPos => {
+    const url = `https://www.google.com/maps/dir/${currentPos.lat},${currentPos.lng}/${loc.lat},${loc.lng}?travelmode=${currentTransportMode}`;
+    window.open(url, '_blank');
+  }).catch(error => {
+    console.warn('Geolocation error:', error);
+    // Fallback to Current+Location
+    const url = `https://www.google.com/maps/dir/Current+Location/${loc.lat},${loc.lng}?travelmode=${currentTransportMode}`;
+    window.open(url, '_blank');
+  });
+  // Still select the location for UI
   selectLocation(loc);
   document.querySelector('.panel-map').scrollIntoView({ behavior: 'smooth' });
 }
