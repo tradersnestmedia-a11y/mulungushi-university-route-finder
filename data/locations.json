@@ -10,16 +10,6 @@
     "description": "The main entrance to Mulungushi University Great North Road Campus."
   },
   {
-    "id": "great-lecture-hall",
-    "name": "Great Lecture Hall",
-    "type": "Lecture Venue",
-    "lat": -14.4470,
-    "lng": 28.4465,
-    "thumbnail": "https://via.placeholder.com/300x200?text=Great+Lecture+Hall",
-    "image": "https://via.placeholder.com/800x600?text=Great+Lecture+Hall",
-    "description": "Large lecture hall for major university events and lectures."
-  },
-  {
     "id": "ict-block",
     "name": "ICT Block",
     "type": "Facility",
