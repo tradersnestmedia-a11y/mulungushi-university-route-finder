@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mulungushi University Route Finder</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <h1>Mulungushi University Route Finder</h1>
+      <p>Venue locator and campus navigation for students, staff, and visitors.</p>
+    </div>
+  </header>
+
+  <main class="page-grid">
+    <section class="panel panel-search">
+      <h2>Search Campus Locations</h2>
+      <div class="search-box">
+        <input id="searchInput" type="search" placeholder="Search for lecture halls, hostels, offices..." />
+      </div>
+      <div id="resultsList" class="results-list"></div>
+    </section>
+
+    <section class="panel panel-map">
+      <h2>Campus Map</h2>
+      <div class="map-frame">
+        <iframe id="mapFrame" title="Mulungushi University campus map" src="https://www.google.com/maps?q=Mulungushi+University+Great+North+Road+Campus&output=embed&maptype=roadmap" loading="lazy"></iframe>
+      </div>
+      <div class="route-info" id="routeInfo">
+        <h3>Route Directions</h3>
+        <div class="transport-selector">
+          <label for="transportMode">Transport Mode:</label>
+          <select id="transportMode" name="transportMode">
+            <option value="walking">Walking</option>
+            <option value="driving">Driving</option>
+            <option value="bicycling">Bicycling</option>
+            <option value="transit">Transit</option>
+          </select>
+        </div>
+        <p>Select a destination from the search results or gallery to display a route from the Main Gate.</p>
+        <a id="directionLink" class="direction-link" href="#" target="_blank" rel="noreferrer">Open route in Google Maps</a>
+      </div>
+    </section>
+
+    <section class="panel panel-preview">
+      <h2>Building Preview</h2>
+      <div class="preview-card" id="previewCard">
+        <img id="previewImage" src="https://via.placeholder.com/600x320?text=Mulungushi+University" alt="Campus preview" />
+        <div class="preview-content">
+          <h3 id="previewName">Mulungushi University</h3>
+          <p id="previewDescription">Use the search box to find classrooms, hostels, offices, and landmarks.</p>
+          <dl>
+            <dt>Type</dt>
+            <dd id="previewCategory">Campus navigation system</dd>
+            <dt>Address</dt>
+            <dd id="previewAddress">Main Gate, Mulungushi University</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="gallery-section">
+    <h2>Campus Image Gallery</h2>
+    <div id="gallery" class="gallery-grid"></div>
+  </section>
+
+  <section class="panel panel-admin">
+    <h2>Admin: Add Campus Location</h2>
+    <form id="adminForm" class="admin-form">
+      <label for="adminName">Building Name</label>
+      <input id="adminName" type="text" placeholder="e.g. Liberty Hostel" required />
+
+      <label for="adminType">Category</label>
+      <input id="adminType" type="text" placeholder="Hostel, Lecture Venue, Office, Landmark" required />
+
+      <label for="adminThumbnail">Thumbnail URL</label>
+      <input id="adminThumbnail" type="url" placeholder="https://example.com/thumb.jpg" required />
+
+      <label for="adminImage">Full Image URL</label>
+      <input id="adminImage" type="url" placeholder="https://example.com/image.jpg" required />
+
+      <label for="adminMapsLink">Google Maps Location Link or Coordinates</label>
+      <input id="adminMapsLink" type="text" placeholder="Enter coordinates like -14.4470,28.4465 or a Google Maps URL / short link" required />
+
+      <label for="adminDescription">Description</label>
+      <textarea id="adminDescription" placeholder="Short description for the building." rows="3" required></textarea>
+
+      <button type="submit" class="admin-submit-btn">Add Location</button>
+    </form>
+  </section>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox">
+    <span class="close" role="button" aria-label="Close image viewer">&times;</span>
+    <img class="lightbox-content" id="lightboxImg" alt="Selected campus location">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Sample system prototype for Mulungushi University Route Finder and Venue Locator System.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

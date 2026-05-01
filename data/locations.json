@@ -1,0 +1,102 @@
+[
+  {
+    "id": "main-gate",
+    "name": "Main Gate",
+    "type": "Landmark",
+    "lat": -14.292382,
+    "lng": 28.555430,
+    "thumbnail": "https://i.postimg.cc/132Qfgqw/gate.jpg",
+    "image": "https://i.postimg.cc/132Qfgqw/gate.jpg",
+    "description": "The main entrance to Mulungushi University Great North Road Campus."
+  },
+  {
+    "id": "great-lecture-hall",
+    "name": "Great Lecture Hall",
+    "type": "Lecture Venue",
+    "lat": -14.4470,
+    "lng": 28.4465,
+    "thumbnail": "https://via.placeholder.com/300x200?text=Great+Lecture+Hall",
+    "image": "https://via.placeholder.com/800x600?text=Great+Lecture+Hall",
+    "description": "Large lecture hall for major university events and lectures."
+  },
+  {
+    "id": "ict-block",
+    "name": "ICT Block",
+    "type": "Facility",
+    "lat": -14.4472,
+    "lng": 28.4466,
+    "thumbnail": "https://via.placeholder.com/300x200?text=ICT+Block",
+    "image": "https://via.placeholder.com/800x600?text=ICT+Block",
+    "description": "Information and Communication Technology facilities."
+  },
+  {
+    "id": "faculty-of-science",
+    "name": "Faculty of Science",
+    "type": "Facility",
+    "lat": -14.4475,
+    "lng": 28.4468,
+    "thumbnail": "https://via.placeholder.com/300x200?text=Faculty+of+Science",
+    "image": "https://via.placeholder.com/800x600?text=Faculty+of+Science",
+    "description": "Science faculty buildings and laboratories."
+  },
+  {
+    "id": "liberty-hostel",
+    "name": "Liberty Hostel",
+    "type": "Hostel",
+    "lat": -14.4480,
+    "lng": 28.4470,
+    "thumbnail": "https://via.placeholder.com/300x200?text=Liberty+Hostel",
+    "image": "https://via.placeholder.com/800x600?text=Liberty+Hostel",
+    "description": "Student accommodation for female students."
+  },
+  {
+    "id": "victory-hostel",
+    "name": "Victory Hostel",
+    "type": "Hostel",
+    "lat": -14.4482,
+    "lng": 28.4472,
+    "thumbnail": "https://via.placeholder.com/300x200?text=Victory+Hostel",
+    "image": "https://via.placeholder.com/800x600?text=Victory+Hostel",
+    "description": "Student accommodation for male students."
+  },
+  {
+    "id": "administration-block",
+    "name": "Administration Block",
+    "type": "Office",
+    "lat": -14.4465,
+    "lng": 28.4460,
+    "thumbnail": "https://via.placeholder.com/300x200?text=Administration+Block",
+    "image": "https://via.placeholder.com/800x600?text=Administration+Block",
+    "description": "University administration offices."
+  },
+  {
+    "id": "university-library",
+    "name": "University Library",
+    "type": "Facility",
+    "lat": -14.4478,
+    "lng": 28.4469,
+    "thumbnail": "https://via.placeholder.com/300x200?text=University+Library",
+    "image": "https://via.placeholder.com/800x600?text=University+Library",
+    "description": "Central library with extensive resources."
+  },
+  {
+    "id": "cafeteria",
+    "name": "Cafeteria",
+    "type": "Facility",
+    "lat": -14.4473,
+    "lng": 28.4467,
+    "thumbnail": "https://via.placeholder.com/300x200?text=Cafeteria",
+    "image": "https://via.placeholder.com/800x600?text=Cafeteria",
+    "description": "Dining facility for students and staff."
+  },
+  {
+    "id": "sports-complex",
+    "name": "Sports Complex",
+    "type": "Facility",
+    "lat": -14.4485,
+    "lng": 28.4475,
+    "thumbnail": "https://via.placeholder.com/300x200?text=Sports+Complex",
+    "image": "https://via.placeholder.com/800x600?text=Sports+Complex",
+    "description": "Sports and recreational facilities."
+  }
+]
