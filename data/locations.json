@@ -3,8 +3,8 @@
     "id": "main-gate",
     "name": "Main Gate",
     "type": "Landmark",
-    "lat": -14.291256,
-    "lng": 28.5551636,
+    "lat": -14.29090,
+    "lng": 28.55127,
     "thumbnail": "https://i.postimg.cc/132Qfgqw/gate.jpg",
     "image": "https://i.postimg.cc/132Qfgqw/gate.jpg",
     "description": "The main entrance to Mulungushi University Great North Road Campus."
@@ -18,16 +18,6 @@
     "thumbnail": "https://i.postimg.cc/nhCxFKCj/ict.jpg",
     "image": "https://i.postimg.cc/nhCxFKCj/ict.jpg",
     "description": "Information and Communication Technology facilities."
-  },
-  {
-    "id": "liberty-hostel",
-    "name": "Liberty Hostel",
-    "type": "Hostel",
-    "lat": -14.4480,
-    "lng": 28.4470,
-    "thumbnail": "https://via.placeholder.com/300x200?text=Liberty+Hostel",
-    "image": "https://via.placeholder.com/800x600?text=Liberty+Hostel",
-    "description": "Student accommodation for female students."
   },
   {
     "id": "administration-block",
