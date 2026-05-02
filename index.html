@@ -5,92 +5,362 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mulungushi University Route Finder</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
+  <!-- Modern Header with Navigation Buttons -->
   <header class="site-header">
-    <div class="brand">
-      <h1>Mulungushi University Route Finder</h1>
-      <p>Venue locator and campus navigation for students, staff, and visitors.</p>
+    <div class="header-container">
+      <div class="logo-area">
+        <img id="siteLogo" class="site-logo" src="https://via.placeholder.com/50x50?text=MU" alt="Mulungushi University Logo" />
+        <div class="brand">
+          <h1>Mulungushi University Route Finder</h1>
+          <p>Venue locator and campus navigation for students, staff, and visitors.</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="nav-buttons">
+          <button class="nav-btn" data-view="home" title="Home">
+            <i class="fas fa-home"></i> <span>Home</span>
+          </button>
+          <button class="nav-btn" data-view="about" title="About">
+            <i class="fas fa-info-circle"></i> <span>About</span>
+          </button>
+          <button class="nav-btn" data-view="team" title="Our Team">
+            <i class="fas fa-users"></i> <span>Our Team</span>
+          </button>
+        </div>
+        <button id="adminLoginBtn" class="admin-login-btn" title="Admin Login">
+          <i class="fas fa-lock"></i> <span>Admin</span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main class="page-grid">
-    <section class="panel panel-search">
-      <h2>Search Campus Locations</h2>
-      <div class="search-box">
-        <input id="searchInput" type="search" placeholder="Search for lecture halls, hostels, offices..." />
-      </div>
-      <div id="resultsList" class="results-list"></div>
-    </section>
+  <!-- Floating Action Button for Mobile Navigation -->
+  <div class="fab-menu" id="fabMenu">
+    <button class="fab-button" id="fabButton" title="Navigation Menu">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="fab-options">
+      <button class="fab-option" data-view="home" title="Go to Home">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </button>
+      <button class="fab-option" data-view="about" title="About Us">
+        <i class="fas fa-info-circle"></i>
+        <span>About</span>
+      </button>
+      <button class="fab-option" data-view="team" title="Our Team">
+        <i class="fas fa-users"></i>
+        <span>Our Team</span>
+      </button>
+      <button class="fab-option" id="fabAdminBtn" title="Admin Panel">
+        <i class="fas fa-user-shield"></i>
+        <span>Admin</span>
+      </button>
+    </div>
+  </div>
 
-    <section class="panel panel-map">
-      <h2>Campus Map</h2>
-      <div class="map-frame">
-        <iframe id="mapFrame" title="Mulungushi University campus map" src="https://www.google.com/maps?q=Mulungushi+University+Great+North+Road+Campus&output=embed&maptype=roadmap" loading="lazy"></iframe>
-      </div>
-      <div class="route-info" id="routeInfo">
-        <h3>Route Directions</h3>
-        <div class="transport-selector">
-          <label for="transportMode">Transport Mode:</label>
-          <select id="transportMode" name="transportMode">
-            <option value="walking">Walking</option>
-            <option value="driving">Driving</option>
-            <option value="bicycling">Bicycling</option>
-            <option value="transit">Transit</option>
-          </select>
+  <!-- Main Content (Visible to everyone) -->
+  <div id="publicContent">
+    <main class="page-grid">
+      <section class="panel panel-search">
+        <h2><i class="fas fa-search"></i> Search Campus Locations</h2>
+        <div class="search-box">
+          <input id="searchInput" type="search" placeholder="Search for lecture halls, hostels, offices..." />
         </div>
-        <p>Select a destination from the search results or gallery to display a route from the Main Gate.</p>
-        <a id="directionLink" class="direction-link" href="#" target="_blank" rel="noreferrer">Open route in Google Maps</a>
+        <div id="resultsList" class="results-list"></div>
+      </section>
+
+      <section class="panel panel-map">
+        <h2><i class="fas fa-map-marked-alt"></i> Campus Map</h2>
+        <div class="map-frame">
+          <iframe id="mapFrame" title="Mulungushi University campus map" src="https://www.google.com/maps?q=Mulungushi+University+Great+North+Road+Campus&output=embed&maptype=roadmap" loading="lazy"></iframe>
+        </div>
+        <div class="route-info" id="routeInfo">
+          <h3><i class="fas fa-route"></i> Route Directions</h3>
+          <div class="transport-selector">
+            <label for="transportMode"><i class="fas fa-walking"></i> Transport Mode:</label>
+            <select id="transportMode" name="transportMode">
+              <option value="walking">Walking</option>
+              <option value="driving">Driving</option>
+              <option value="bicycling">Bicycling</option>
+              <option value="transit">Transit</option>
+            </select>
+          </div>
+          <p>Select a destination from the search results or gallery to display a route from the Main Gate.</p>
+          <a id="directionLink" class="direction-link" href="#" target="_blank" rel="noreferrer">
+            <i class="fas fa-external-link-alt"></i> Open route in Google Maps
+          </a>
+        </div>
+      </section>
+
+      <section class="panel panel-preview">
+        <h2><i class="fas fa-building"></i> Building Preview</h2>
+        <div class="preview-card" id="previewCard">
+          <img id="previewImage" src="https://via.placeholder.com/600x320?text=Mulungushi+University" alt="Campus preview" />
+          <div class="preview-content">
+            <h3 id="previewName">Mulungushi University</h3>
+            <p id="previewDescription">Use the search box to find classrooms, hostels, offices, and landmarks.</p>
+            <dl>
+              <dt><i class="fas fa-tag"></i> Type</dt>
+              <dd id="previewCategory">Campus navigation system</dd>
+              <dt><i class="fas fa-location-dot"></i> Address</dt>
+              <dd id="previewAddress">Main Gate, Mulungushi University</dd>
+            </dl>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Events & Information Slideshow Section -->
+    <section class="events-section">
+      <h2><i class="fas fa-calendar-alt"></i> Events & Campus Information</h2>
+      <div class="slideshow-container">
+        <div id="slideshow" class="slideshow"></div>
+        <button class="slide-prev" id="slidePrev" title="Previous Slide">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="slide-next" id="slideNext" title="Next Slide">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="slide-dots" id="slideDots"></div>
       </div>
     </section>
 
-    <section class="panel panel-preview">
-      <h2>Building Preview</h2>
-      <div class="preview-card" id="previewCard">
-        <img id="previewImage" src="https://via.placeholder.com/600x320?text=Mulungushi+University" alt="Campus preview" />
-        <div class="preview-content">
-          <h3 id="previewName">Mulungushi University</h3>
-          <p id="previewDescription">Use the search box to find classrooms, hostels, offices, and landmarks.</p>
-          <dl>
-            <dt>Type</dt>
-            <dd id="previewCategory">Campus navigation system</dd>
-            <dt>Address</dt>
-            <dd id="previewAddress">Main Gate, Mulungushi University</dd>
-          </dl>
+    <!-- Campus Image Gallery Section -->
+    <section class="gallery-section">
+      <h2><i class="fas fa-images"></i> Campus Image Gallery</h2>
+      <div id="gallery" class="gallery-grid"></div>
+    </section>
+  </div>
+
+  <!-- Admin Panel -->
+  <div id="adminPanel">
+    <div class="admin-navbar">
+      <button class="admin-nav-btn active" data-tab="dashboard" title="Dashboard">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+      </button>
+      <button class="admin-nav-btn" data-tab="locations" title="Manage Locations">
+        <i class="fas fa-map-marker-alt"></i> Locations
+      </button>
+      <button class="admin-nav-btn" data-tab="events" title="Manage Events">
+        <i class="fas fa-calendar"></i> Events
+      </button>
+      <button class="admin-nav-btn" data-tab="team" title="Manage Team">
+        <i class="fas fa-users"></i> Team
+      </button>
+      <button class="admin-nav-btn" data-tab="about" title="About">
+        <i class="fas fa-info-circle"></i> About
+      </button>
+      <button class="admin-nav-btn" data-tab="settings" title="Settings">
+        <i class="fas fa-cog"></i> Settings
+      </button>
+      <button id="adminLogoutBtn" class="admin-logout-btn" title="Logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+
+    <div class="admin-tab-contents">
+      <!-- Dashboard Tab -->
+      <div class="admin-tab" id="dashboardTab">
+        <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+        <div class="dashboard-stats">
+          <div class="stat-card">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Locations</h3>
+            <p id="statLocations">0</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-calendar-alt"></i>
+            <h3>Events</h3>
+            <p id="statEvents">0</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-users"></i>
+            <h3>Team Members</h3>
+            <p id="statTeam">0</p>
+          </div>
         </div>
       </div>
+
+      <!-- Manage Locations Tab -->
+      <div class="admin-tab" id="locationsTab">
+        <h2><i class="fas fa-plus-circle"></i> Add New Location</h2>
+        <form id="adminForm" class="admin-form">
+          <div class="form-group">
+            <label><i class="fas fa-building"></i> Building Name</label>
+            <input id="adminName" type="text" placeholder="e.g. Liberty Hostel" required />
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-tag"></i> Category</label>
+            <input id="adminType" type="text" placeholder="Hostel, Lecture Venue, Office, Landmark" required />
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-image"></i> Thumbnail URL</label>
+            <input id="adminThumbnail" type="url" placeholder="https://example.com/thumb.jpg" required />
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-camera"></i> Full Image URL</label>
+            <input id="adminImage" type="url" placeholder="https://example.com/image.jpg" required />
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-map"></i> Location Link or Coordinates</label>
+            <input id="adminMapsLink" type="text" placeholder="Enter coordinates like -14.4470,28.4465 or a Google Maps URL" required />
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-align-left"></i> Description</label>
+            <textarea id="adminDescription" placeholder="Short description for the building." rows="3" required></textarea>
+          </div>
+          <button type="submit" class="admin-submit-btn"><i class="fas fa-save"></i> Add Location</button>
+        </form>
+        
+        <h3 class="sub-section-title"><i class="fas fa-list"></i> Existing Locations</h3>
+        <div id="manageLocationsList" class="manage-list"></div>
+      </div>
+
+      <!-- Manage Events Tab -->
+      <div class="admin-tab" id="eventsTab">
+        <h2><i class="fas fa-plus-circle"></i> Add New Event</h2>
+        <form id="eventForm" class="admin-form">
+          <div class="form-group full-width">
+            <label><i class="fas fa-heading"></i> Event Title</label>
+            <input id="eventTitle" type="text" placeholder="e.g. Graduation Ceremony 2026" required />
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-calendar-day"></i> Event Date</label>
+            <input id="eventDate" type="date" required />
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-image"></i> Event Image URL</label>
+            <input id="eventImage" type="url" placeholder="https://example.com/event-image.jpg" required />
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-align-left"></i> Event Description</label>
+            <textarea id="eventDescription" placeholder="Detailed information about the event" rows="3" required></textarea>
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-location-dot"></i> Event Location</label>
+            <input id="eventLocation" type="text" placeholder="e.g. Great Hall" />
+          </div>
+          <button type="submit" class="admin-submit-btn"><i class="fas fa-save"></i> Add Event</button>
+        </form>
+        
+        <h3 class="sub-section-title"><i class="fas fa-list"></i> Existing Events</h3>
+        <div id="manageEventsList" class="manage-list"></div>
+      </div>
+
+      <!-- Team Information Tab -->
+      <div class="admin-tab" id="teamTab">
+        <h2><i class="fas fa-user-plus"></i> Add Team Member</h2>
+        <form id="teamForm" class="admin-form">
+          <div class="form-group full-width">
+            <label><i class="fas fa-user"></i> Full Name</label>
+            <input id="teamName" type="text" placeholder="e.g. Dr. John Banda" required />
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-briefcase"></i> Role/Position</label>
+            <input id="teamRole" type="text" placeholder="e.g. Vice Chancellor, IT Director" required />
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-image"></i> Profile Image URL</label>
+            <input id="teamImage" type="url" placeholder="https://example.com/profile.jpg" required />
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-align-left"></i> Bio</label>
+            <textarea id="teamBio" placeholder="Brief biography and contact information" rows="3"></textarea>
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-envelope"></i> Email</label>
+            <input id="teamEmail" type="email" placeholder="email@mulungushi.ac.zm" />
+          </div>
+          <button type="submit" class="admin-submit-btn"><i class="fas fa-save"></i> Add Team Member</button>
+        </form>
+        
+        <h3 class="sub-section-title"><i class="fas fa-users"></i> Existing Team Members</h3>
+        <div id="manageTeamList" class="manage-list"></div>
+      </div>
+
+      <!-- About Tab -->
+      <div class="admin-tab" id="aboutTab">
+        <h2><i class="fas fa-edit"></i> About Mulungushi University</h2>
+        <form id="aboutForm" class="about-form">
+          <div class="form-group full-width">
+            <label><i class="fas fa-align-left"></i> About Content</label>
+            <textarea id="aboutContent" rows="8" placeholder="Write about the university history, mission, vision, and values..."></textarea>
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-image"></i> About Section Image URL</label>
+            <input id="aboutImage" type="url" placeholder="https://example.com/university-image.jpg" />
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-address-card"></i> Contact Information</label>
+            <textarea id="contactInfo" rows="4" placeholder="Address, phone numbers, email, website..."></textarea>
+          </div>
+          <button type="submit" class="admin-submit-btn"><i class="fas fa-save"></i> Save About Information</button>
+        </form>
+        
+        <div class="about-preview">
+          <h3><i class="fas fa-eye"></i> About Page Preview</h3>
+          <div id="aboutPreview" class="about-preview-content"></div>
+        </div>
+      </div>
+
+      <!-- Settings Tab -->
+      <div class="admin-tab" id="settingsTab">
+        <h2><i class="fas fa-sliders-h"></i> Website Settings</h2>
+        <form id="settingsForm" class="settings-form">
+          <div class="form-group full-width">
+            <label><i class="fas fa-image"></i> Site Logo URL</label>
+            <input id="siteLogoUrl" type="url" placeholder="https://example.com/logo.png" />
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-heading"></i> Site Title</label>
+            <input id="siteTitle" type="text" value="Mulungushi University Route Finder" />
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-subscript"></i> Site Subtitle</label>
+            <input id="siteSubtitle" type="text" value="Venue locator and campus navigation for students, staff, and visitors." />
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-key"></i> Change Admin Password</label>
+            <input id="adminPassword" type="password" placeholder="New password" />
+            <input id="confirmPassword" type="password" placeholder="Confirm new password" />
+          </div>
+          <button type="submit" class="admin-submit-btn"><i class="fas fa-save"></i> Save Settings</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Content Section (Public View) -->
+  <div id="publicAboutSection">
+    <section class="about-section">
+      <div class="about-header">
+        <h2><i class="fas fa-university"></i> About Mulungushi University</h2>
+      </div>
+      <div id="publicAboutContent" class="about-content"></div>
     </section>
-  </main>
+  </div>
 
-  <section class="gallery-section">
-    <h2>Campus Image Gallery</h2>
-    <div id="gallery" class="gallery-grid"></div>
-  </section>
+  <!-- Team Content Section (Public View) -->
+  <div id="publicTeamSection">
+    <section class="team-section">
+      <div class="team-header">
+        <h2><i class="fas fa-users"></i> Our Team</h2>
+        <p>Meet the dedicated team behind Mulungushi University</p>
+      </div>
+      <div id="publicTeamGrid" class="team-grid"></div>
+    </section>
+  </div>
 
-  <section class="panel panel-admin">
-    <h2>Admin: Add Campus Location</h2>
-    <form id="adminForm" class="admin-form">
-      <label for="adminName">Building Name</label>
-      <input id="adminName" type="text" placeholder="e.g. Liberty Hostel" required />
-
-      <label for="adminType">Category</label>
-      <input id="adminType" type="text" placeholder="Hostel, Lecture Venue, Office, Landmark" required />
-
-      <label for="adminThumbnail">Thumbnail URL</label>
-      <input id="adminThumbnail" type="url" placeholder="https://example.com/thumb.jpg" required />
-
-      <label for="adminImage">Full Image URL</label>
-      <input id="adminImage" type="url" placeholder="https://example.com/image.jpg" required />
-
-      <label for="adminMapsLink">Google Maps Location Link or Coordinates</label>
-      <input id="adminMapsLink" type="text" placeholder="Enter coordinates like -14.4470,28.4465 or a Google Maps URL / short link" required />
-
-      <label for="adminDescription">Description</label>
-      <textarea id="adminDescription" placeholder="Short description for the building." rows="3" required></textarea>
-
-      <button type="submit" class="admin-submit-btn">Add Location</button>
-    </form>
-  </section>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>&copy; 2026 Mulungushi University. All rights reserved.</p>
+    </div>
+  </footer>
 
   <!-- Lightbox Modal -->
   <div id="lightbox" class="lightbox">
@@ -99,9 +369,21 @@
     <div class="lightbox-caption" id="lightboxCaption"></div>
   </div>
 
-  <footer class="site-footer">
-    <p>Sample system prototype for Mulungushi University Route Finder and Venue Locator System.</p>
-  </footer>
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" aria-label="Close modal">&times;</span>
+      <div class="modal-icon">
+        <i class="fas fa-user-shield"></i>
+      </div>
+      <h2>Admin Login</h2>
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="loginPassword" placeholder="Enter admin password" />
+      </div>
+      <button id="loginSubmitBtn">Login <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
 
   <script src="js/app.js"></script>
 </body>
