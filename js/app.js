@@ -20,11 +20,32 @@ let slideInterval;
 let isAdminLoggedIn = false;
 let currentView = "home";
 
+// Toast notification function
+function showToast(message, isError = false) {
+  const toast = document.createElement('div');
+  toast.className = `toast-notification ${isError ? 'error' : ''}`;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.classList.add('show');
+  }, 10);
+  
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => {
+      toast.remove();
+    }, 300);
+  }, 3000);
+}
+
 // Load data from localStorage
 function loadData() {
+  // Load locations
   const storedLocations = localStorage.getItem("mu_locations");
   if (storedLocations) {
     locations = JSON.parse(storedLocations);
+    console.log("Locations loaded from localStorage:", locations.length);
   } else {
     locations = [
       {
@@ -68,11 +89,14 @@ function loadData() {
         description: "Central library with extensive resources."
       }
     ];
+    saveLocations();
   }
 
+  // Load events
   const storedEvents = localStorage.getItem("mu_events");
   if (storedEvents) {
     events = JSON.parse(storedEvents);
+    console.log("Events loaded from localStorage:", events.length);
   } else {
     events = [
       {
@@ -92,11 +116,14 @@ function loadData() {
         location: "Great Hall"
       }
     ];
+    saveEvents();
   }
 
+  // Load team members
   const storedTeam = localStorage.getItem("mu_team");
   if (storedTeam) {
     teamMembers = JSON.parse(storedTeam);
+    console.log("Team members loaded from localStorage:", teamMembers.length);
   } else {
     teamMembers = [
       {
@@ -116,37 +143,52 @@ function loadData() {
         email: "registrar@mulungushi.ac.zm"
       }
     ];
+    saveTeam();
   }
 
+  // Load about info
   const storedAbout = localStorage.getItem("mu_about");
   if (storedAbout) {
     aboutInfo = JSON.parse(storedAbout);
+    console.log("About info loaded from localStorage");
+  } else {
+    saveAbout();
   }
 
+  // Load settings
   const storedSettings = localStorage.getItem("mu_settings");
   if (storedSettings) {
     settings = JSON.parse(storedSettings);
+    console.log("Settings loaded from localStorage");
+  } else {
+    saveSettings();
   }
 }
 
+// Save functions with console logs
 function saveLocations() {
   localStorage.setItem("mu_locations", JSON.stringify(locations));
+  console.log("✅ Locations saved to localStorage:", locations.length);
 }
 
 function saveEvents() {
   localStorage.setItem("mu_events", JSON.stringify(events));
+  console.log("✅ Events saved to localStorage:", events.length);
 }
 
 function saveTeam() {
   localStorage.setItem("mu_team", JSON.stringify(teamMembers));
+  console.log("✅ Team members saved to localStorage:", teamMembers.length);
 }
 
 function saveAbout() {
   localStorage.setItem("mu_about", JSON.stringify(aboutInfo));
+  console.log("✅ About info saved to localStorage");
 }
 
 function saveSettings() {
   localStorage.setItem("mu_settings", JSON.stringify(settings));
+  console.log("✅ Settings saved to localStorage");
 }
 
 // DOM Elements
@@ -210,7 +252,6 @@ navButtons.forEach(btn => {
     const view = btn.dataset.view;
     if (view) {
       showView(view);
-      // Update active state
       navButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
     }
@@ -244,7 +285,6 @@ document.querySelectorAll(".fab-option").forEach(option => {
     if (view) {
       showView(view);
       fabMenu.classList.remove("open");
-      // Update active state on nav buttons
       navButtons.forEach(btn => {
         if (btn.dataset.view === view) {
           btn.classList.add("active");
@@ -303,8 +343,9 @@ function checkLogin() {
     loginModal.classList.remove("show");
     loginPassword.value = "";
     showAdminMode();
+    showToast("✅ Login successful! Welcome Admin.");
   } else {
-    alert("Incorrect password!");
+    showToast("❌ Incorrect password!", true);
   }
 }
 
@@ -313,7 +354,6 @@ function logout() {
   showPublicMode();
   currentView = "home";
   showView("home");
-  // Reset active nav button
   navButtons.forEach(btn => {
     if (btn.dataset.view === "home") {
       btn.classList.add("active");
@@ -321,6 +361,7 @@ function logout() {
       btn.classList.remove("active");
     }
   });
+  showToast("✅ Logged out successfully.");
 }
 
 function showAdminMode() {
@@ -394,12 +435,15 @@ function renderAll() {
 }
 
 function updateSiteSettings() {
-  siteLogo.src = settings.logo;
-  document.querySelector(".brand h1").textContent = settings.title;
-  document.querySelector(".brand p").textContent = settings.subtitle;
+  if (siteLogo) siteLogo.src = settings.logo;
+  const brandTitle = document.querySelector(".brand h1");
+  const brandSubtitle = document.querySelector(".brand p");
+  if (brandTitle) brandTitle.textContent = settings.title;
+  if (brandSubtitle) brandSubtitle.textContent = settings.subtitle;
 }
 
 function renderGallery() {
+  if (!gallery) return;
   gallery.innerHTML = "";
   locations.forEach(loc => {
     const item = document.createElement("div");
@@ -436,6 +480,7 @@ function renderGallery() {
 }
 
 function renderSlideshow() {
+  if (!slideshow) return;
   slideshow.innerHTML = "";
   if (events.length === 0) {
     slideshow.innerHTML = '<div class="slide active"><div class="slide-content"><p>No events scheduled. Check back soon!</p></div></div>';
@@ -461,6 +506,7 @@ function renderSlideshow() {
 }
 
 function renderDots() {
+  if (!slideDots) return;
   slideDots.innerHTML = "";
   for (let i = 0; i < events.length; i++) {
     const dot = document.createElement("span");
@@ -485,14 +531,14 @@ function goToSlide(index) {
   
   if (slides.length === 0) return;
   
-  slides[currentSlideIndex]?.classList.remove("active");
-  dots[currentSlideIndex]?.classList.remove("active");
+  if (slides[currentSlideIndex]) slides[currentSlideIndex].classList.remove("active");
+  if (dots[currentSlideIndex]) dots[currentSlideIndex].classList.remove("active");
   
   currentSlideIndex = index;
   if (currentSlideIndex >= slides.length) currentSlideIndex = 0;
   if (currentSlideIndex < 0) currentSlideIndex = slides.length - 1;
   
-  slides[currentSlideIndex]?.classList.add("active");
+  if (slides[currentSlideIndex]) slides[currentSlideIndex].classList.add("active");
   if (dots[currentSlideIndex]) dots[currentSlideIndex].classList.add("active");
 }
 
@@ -509,6 +555,7 @@ if (slideNext) slideNext.addEventListener("click", nextSlide);
 
 function renderPublicAbout() {
   const container = document.getElementById("publicAboutContent");
+  if (!container) return;
   container.innerHTML = `
     <div class="about-container">
       ${aboutInfo.image ? `<img src="${aboutInfo.image}" alt="Mulungushi University" class="about-image">` : ""}
@@ -525,6 +572,7 @@ function renderPublicAbout() {
 
 function renderPublicTeam() {
   const container = document.getElementById("publicTeamGrid");
+  if (!container) return;
   container.innerHTML = teamMembers.map(member => `
     <div class="team-card">
       <img src="${member.image}" alt="${member.name}">
@@ -539,6 +587,7 @@ function renderPublicTeam() {
 }
 
 function displayResults(results) {
+  if (!resultsList) return;
   resultsList.innerHTML = "";
   results.forEach(loc => {
     const item = document.createElement("div");
@@ -556,16 +605,19 @@ function selectLocation(loc) {
 }
 
 function updateMap(loc) {
+  if (!mapFrame) return;
   mapFrame.src = getMapEmbedUrl(loc);
 }
 
 function updateRoute(loc) {
+  if (!directionLink) return;
   const routeUrl = getRouteUrl(loc);
   directionLink.href = routeUrl;
   directionLink.textContent = `Get directions to ${loc.name} (${currentTransportMode})`;
 }
 
 function updatePreview(loc) {
+  if (!previewImage) return;
   previewImage.src = loc.image || loc.thumbnail;
   previewName.textContent = loc.name;
   previewDescription.textContent = loc.description;
@@ -590,6 +642,7 @@ function getRouteUrl(loc) {
 
 function openLightbox(id) {
   const loc = locations.find(l => l.id === id);
+  if (!loc) return;
   lightboxImg.src = loc.image || loc.thumbnail;
   lightboxImg.alt = loc.name;
   lightboxCaption.innerHTML = `<h3>${loc.name}</h3><p>${loc.description}</p>`;
@@ -598,6 +651,7 @@ function openLightbox(id) {
 
 function getDirections(id) {
   const loc = locations.find(l => l.id === id);
+  if (!loc) return;
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -622,166 +676,211 @@ function formatDate(dateString) {
 }
 
 // Admin Forms
-document.getElementById("adminForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const newLoc = {
-    id: Date.now().toString(),
-    name: document.getElementById("adminName").value,
-    type: document.getElementById("adminType").value,
-    lat: -14.29,
-    lng: 28.55,
-    thumbnail: document.getElementById("adminThumbnail").value,
-    image: document.getElementById("adminImage").value,
-    mapsLink: document.getElementById("adminMapsLink").value,
-    description: document.getElementById("adminDescription").value
-  };
-  locations.push(newLoc);
-  saveLocations();
-  renderGallery();
-  loadAdminData();
-  this.reset();
-  alert("Location added successfully!");
-});
+const adminForm = document.getElementById("adminForm");
+if (adminForm) {
+  adminForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const newLoc = {
+      id: Date.now().toString(),
+      name: document.getElementById("adminName").value,
+      type: document.getElementById("adminType").value,
+      lat: -14.29,
+      lng: 28.55,
+      thumbnail: document.getElementById("adminThumbnail").value,
+      image: document.getElementById("adminImage").value,
+      mapsLink: document.getElementById("adminMapsLink").value,
+      description: document.getElementById("adminDescription").value
+    };
+    locations.push(newLoc);
+    saveLocations();
+    renderGallery();
+    renderManageLocations();
+    loadAdminData();
+    this.reset();
+    showToast(`✅ "${newLoc.name}" added successfully!`);
+  });
+}
 
-document.getElementById("eventForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const newEvent = {
-    id: Date.now().toString(),
-    title: document.getElementById("eventTitle").value,
-    date: document.getElementById("eventDate").value,
-    image: document.getElementById("eventImage").value,
-    description: document.getElementById("eventDescription").value,
-    location: document.getElementById("eventLocation").value
-  };
-  events.push(newEvent);
-  saveEvents();
-  renderSlideshow();
-  loadAdminData();
-  this.reset();
-  alert("Event added successfully!");
-});
+const eventForm = document.getElementById("eventForm");
+if (eventForm) {
+  eventForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const newEvent = {
+      id: Date.now().toString(),
+      title: document.getElementById("eventTitle").value,
+      date: document.getElementById("eventDate").value,
+      image: document.getElementById("eventImage").value,
+      description: document.getElementById("eventDescription").value,
+      location: document.getElementById("eventLocation").value
+    };
+    events.push(newEvent);
+    saveEvents();
+    renderSlideshow();
+    startSlideshow();
+    renderManageEvents();
+    loadAdminData();
+    this.reset();
+    showToast(`✅ "${newEvent.title}" event added successfully!`);
+  });
+}
 
-document.getElementById("teamForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const newMember = {
-    id: Date.now().toString(),
-    name: document.getElementById("teamName").value,
-    role: document.getElementById("teamRole").value,
-    image: document.getElementById("teamImage").value,
-    bio: document.getElementById("teamBio").value,
-    email: document.getElementById("teamEmail").value
-  };
-  teamMembers.push(newMember);
-  saveTeam();
-  loadAdminData();
-  if (!isAdminLoggedIn) renderPublicTeam();
-  this.reset();
-  alert("Team member added successfully!");
-});
+const teamForm = document.getElementById("teamForm");
+if (teamForm) {
+  teamForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const newMember = {
+      id: Date.now().toString(),
+      name: document.getElementById("teamName").value,
+      role: document.getElementById("teamRole").value,
+      image: document.getElementById("teamImage").value,
+      bio: document.getElementById("teamBio").value,
+      email: document.getElementById("teamEmail").value
+    };
+    teamMembers.push(newMember);
+    saveTeam();
+    renderManageTeam();
+    loadAdminData();
+    if (!isAdminLoggedIn) renderPublicTeam();
+    this.reset();
+    showToast(`✅ "${newMember.name}" added to team!`);
+  });
+}
 
-document.getElementById("aboutForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  aboutInfo = {
-    content: document.getElementById("aboutContent").value,
-    image: document.getElementById("aboutImage").value,
-    contact: document.getElementById("contactInfo").value
-  };
-  saveAbout();
-  if (!isAdminLoggedIn) renderPublicAbout();
-  alert("About information saved successfully!");
-});
+const aboutForm = document.getElementById("aboutForm");
+if (aboutForm) {
+  aboutForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    aboutInfo = {
+      content: document.getElementById("aboutContent").value,
+      image: document.getElementById("aboutImage").value,
+      contact: document.getElementById("contactInfo").value
+    };
+    saveAbout();
+    if (!isAdminLoggedIn) renderPublicAbout();
+    showToast("✅ About information saved successfully!");
+  });
+}
 
-document.getElementById("settingsForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const newPassword = document.getElementById("adminPassword").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
-  
-  if (newPassword && newPassword !== confirmPassword) {
-    alert("Passwords do not match!");
-    return;
-  }
-  
-  settings = {
-    logo: document.getElementById("siteLogoUrl").value,
-    title: document.getElementById("siteTitle").value,
-    subtitle: document.getElementById("siteSubtitle").value,
-    adminPassword: newPassword || settings.adminPassword
-  };
-  saveSettings();
-  updateSiteSettings();
-  alert("Settings saved successfully!");
-});
+const settingsForm = document.getElementById("settingsForm");
+if (settingsForm) {
+  settingsForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const newPassword = document.getElementById("adminPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    
+    if (newPassword && newPassword !== confirmPassword) {
+      showToast("❌ Passwords do not match!", true);
+      return;
+    }
+    
+    settings = {
+      logo: document.getElementById("siteLogoUrl").value,
+      title: document.getElementById("siteTitle").value,
+      subtitle: document.getElementById("siteSubtitle").value,
+      adminPassword: newPassword || settings.adminPassword
+    };
+    saveSettings();
+    updateSiteSettings();
+    showToast("✅ Settings saved successfully!");
+    if (newPassword) {
+      showToast("⚠️ Password changed. Remember your new password!");
+    }
+  });
+}
 
 function renderManageLocations() {
   const container = document.getElementById("manageLocationsList");
+  if (!container) return;
   container.innerHTML = locations.map(loc => `
     <div class="manage-item">
       <div class="manage-item-info">
-        <h4>${loc.name}</h4>
-        <p>${loc.type} - ${loc.description.substring(0, 50)}...</p>
+        <h4><i class="fas fa-building"></i> ${loc.name}</h4>
+        <p><strong>Type:</strong> ${loc.type}</p>
+        <p>${loc.description.substring(0, 80)}...</p>
       </div>
-      <button class="delete-btn" onclick="window.deleteLocation('${loc.id}')" title="Delete Location">Delete</button>
+      <button class="delete-btn" onclick="window.deleteLocation('${loc.id}')" title="Delete Location">
+        <i class="fas fa-trash"></i> Delete
+      </button>
     </div>
   `).join("");
 }
 
 function renderManageEvents() {
   const container = document.getElementById("manageEventsList");
+  if (!container) return;
   container.innerHTML = events.map(event => `
     <div class="manage-item">
       <div class="manage-item-info">
-        <h4>${event.title}</h4>
-        <p>${formatDate(event.date)} - ${event.description.substring(0, 50)}...</p>
+        <h4><i class="fas fa-calendar-alt"></i> ${event.title}</h4>
+        <p><strong>Date:</strong> ${formatDate(event.date)}</p>
+        <p>${event.description.substring(0, 80)}...</p>
       </div>
-      <button class="delete-btn" onclick="window.deleteEvent('${event.id}')" title="Delete Event">Delete</button>
+      <button class="delete-btn" onclick="window.deleteEvent('${event.id}')" title="Delete Event">
+        <i class="fas fa-trash"></i> Delete
+      </button>
     </div>
   `).join("");
 }
 
 function renderManageTeam() {
   const container = document.getElementById("manageTeamList");
+  if (!container) return;
   container.innerHTML = teamMembers.map(member => `
     <div class="manage-item">
       <div class="manage-item-info">
-        <h4>${member.name}</h4>
-        <p>${member.role}</p>
+        <h4><i class="fas fa-user"></i> ${member.name}</h4>
+        <p><strong>Role:</strong> ${member.role}</p>
+        ${member.email ? `<p><strong>Email:</strong> ${member.email}</p>` : ""}
       </div>
-      <button class="delete-btn" onclick="window.deleteTeamMember('${member.id}')" title="Delete Team Member">Delete</button>
+      <button class="delete-btn" onclick="window.deleteTeamMember('${member.id}')" title="Delete Team Member">
+        <i class="fas fa-trash"></i> Delete
+      </button>
     </div>
   `).join("");
 }
 
+// Global delete functions
 window.deleteLocation = function(id) {
+  const locName = locations.find(l => l.id === id)?.name;
   locations = locations.filter(l => l.id !== id);
   saveLocations();
   renderGallery();
+  renderManageLocations();
   loadAdminData();
-  alert("Location deleted successfully!");
+  showToast(`🗑️ "${locName}" has been deleted.`);
 };
 
 window.deleteEvent = function(id) {
+  const eventTitle = events.find(e => e.id === id)?.title;
   events = events.filter(e => e.id !== id);
   saveEvents();
   renderSlideshow();
+  renderManageEvents();
   loadAdminData();
-  alert("Event deleted successfully!");
+  showToast(`🗑️ "${eventTitle}" event has been deleted.`);
 };
 
 window.deleteTeamMember = function(id) {
+  const memberName = teamMembers.find(t => t.id === id)?.name;
   teamMembers = teamMembers.filter(t => t.id !== id);
   saveTeam();
+  renderManageTeam();
   loadAdminData();
   if (!isAdminLoggedIn) renderPublicTeam();
-  alert("Team member deleted successfully!");
+  showToast(`🗑️ "${memberName}" has been removed from team.`);
 };
 
 // Lightbox close
-closeBtn.onclick = () => lightbox.classList.remove("show");
-lightbox.onclick = (event) => { if (event.target === lightbox) lightbox.classList.remove("show"); };
+if (closeBtn) {
+  closeBtn.onclick = () => lightbox.classList.remove("show");
+}
+if (lightbox) {
+  lightbox.onclick = (event) => { if (event.target === lightbox) lightbox.classList.remove("show"); };
+}
 
 // Handle window resize
 window.addEventListener("resize", () => {
-  if (window.innerWidth <= 992 && !isAdminLoggedIn) {
+  if (window.innerWidth <= 992 && !isAdminLoggedIn && fabMenu) {
     fabMenu.style.display = "block";
   } else if (fabMenu) {
     fabMenu.style.display = "none";
@@ -789,7 +888,7 @@ window.addEventListener("resize", () => {
 });
 
 // Initial check for mobile/tablet
-if (window.innerWidth <= 992 && !isAdminLoggedIn) {
+if (window.innerWidth <= 992 && !isAdminLoggedIn && fabMenu) {
   fabMenu.style.display = "block";
 }
 
@@ -800,4 +899,10 @@ navButtons.forEach(btn => {
   }
 });
 
-console.log("Application loaded successfully!");
+console.log("✅ Application loaded successfully!");
+console.log("📊 Data status:", {
+  locations: locations.length,
+  events: events.length,
+  teamMembers: teamMembers.length,
+  adminPassword: "***hidden***"
+});

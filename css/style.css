@@ -720,6 +720,8 @@ body {
   margin-top: 2rem;
   margin-bottom: 1rem;
   color: #2c3e50;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
 }
 
 .manage-list {
@@ -736,6 +738,11 @@ body {
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
+  transition: all 0.2s;
+}
+
+.manage-item:hover {
+  background: #e9ecef;
 }
 
 .manage-item-info {
@@ -744,6 +751,7 @@ body {
 
 .manage-item-info h4 {
   margin-bottom: 0.25rem;
+  color: #2c3e50;
 }
 
 .manage-item-info p {
@@ -758,11 +766,15 @@ body {
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .delete-btn:hover {
   background-color: #c0392b;
+  transform: scale(1.02);
 }
 
 /* About Preview */
@@ -780,6 +792,8 @@ body {
   background: #f8f9fa;
   padding: 1.5rem;
   border-radius: 8px;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 /* Public About & Team Sections */
@@ -1071,6 +1085,30 @@ body {
 .scroll-top:hover {
   background: #2980b9;
   transform: translateY(-3px);
+}
+
+/* Toast Notification */
+.toast-notification {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #27ae60;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  z-index: 1100;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  font-weight: 500;
+}
+
+.toast-notification.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast-notification.error {
+  background: #e74c3c;
 }
 
 /* Desktop Navigation - visible on larger screens */
